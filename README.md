@@ -1,6 +1,4 @@
-Berikut adalah README yang telah diperbarui tanpa kata "Anda":
 
----
 
 # Market Web Application
 
