@@ -30,14 +30,9 @@ Proyek ini adalah aplikasi web market yang dibangun menggunakan **Next.js** untu
 
 1. **Clone repository dari GitHub**:
    ```bash
-   git clone https://github.com/username/repository-name.git
+   git clone https://github.com/AlvaroSeptra/backendgrouph.git
    ```
    Gantilah `username` dengan nama pengguna GitHub dan `repository-name` dengan nama repository.
-
-2. **Masuk ke direktori proyek**:
-   ```bash
-   cd repository-name
-   ```
 
 ## Cara Menjalankan Backend (Flask)
 
