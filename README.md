@@ -67,6 +67,58 @@ Proyek ini adalah aplikasi web market yang dibangun menggunakan **Next.js** untu
    ```
    Server Flask akan berjalan di `http://127.0.0.1:5000/`.
 
+
+## Instalasi dan Konfigurasi Supabase
+
+Supabase digunakan untuk autentikasi pengguna dan manajemen data di aplikasi ini. Ikuti langkah-langkah berikut untuk menginstal dan mengonfigurasi Supabase.
+
+### 1. **Buat Akun Supabase dan Proyek Baru**
+
+Jika belum memiliki akun, buat akun di [Supabase](https://supabase.com/). Setelah itu, buat proyek baru dari dashboard Supabase.
+
+### 2. **Dapatkan URL Supabase dan Anon Key**
+
+Setelah membuat proyek, navigasi ke bagian "API" di dashboard Supabase. Di sana, akan ditemukan:
+
+- **Supabase URL**: URL dasar untuk API Supabase.
+- **Anon Key**: Kunci publik yang digunakan untuk autentikasi anonim di frontend.
+
+### 3. **Tambahkan Kredensial Supabase ke `.env`**
+
+Masukkan URL dan Anon Key ke dalam file `.env` yang telah dibuat sebelumnya.
+
+Contoh `.env`:
+
+```plaintext
+SECRET_KEY=your_secret_key
+DATABASE_URL=your_database_url
+NEXT_PUBLIC_SUPABASE_URL=https://your-supabase-url.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
+Gantilah `your_supabase_url` dan `your_anon_key` dengan nilai yang sesuai dari dashboard Supabase.
+
+### 4. **Instal Dependensi Supabase di Frontend**
+
+Pastikan dependensi Supabase terinstal di frontend dengan perintah berikut:
+
+```bash
+npm install @supabase/supabase-js
+```
+
+### 5. **Konfigurasi Supabase di Frontend**
+
+Pastikan telah mengonfigurasi Supabase di proyek Next.js. Contoh file `supabaseClient.js` atau `supabaseClient.ts`:
+
+```typescript
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+```
+
 ## Cara Menjalankan Frontend (Next.js)
 
 1. **Kembali ke root proyek**:
@@ -112,3 +164,6 @@ Jika terjadi masalah terkait "rate limit" atau error lainnya, beberapa solusi ya
 - Menunggu beberapa saat sebelum mencoba lagi.
 - Menggunakan akun email berbeda untuk pengujian.
 - Memastikan bahwa semua dependensi sudah diinstal dengan versi yang benar.
+
+
+
