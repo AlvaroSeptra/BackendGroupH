@@ -27,16 +27,16 @@ Dokumentasi lengkap API backend ini dapat diakses melalui Postman dengan mengunj
 1. **Clone repositori ini:**
 
    ```bash
-   git clone https://github.com/nama_pengguna/nama_repo.git
-   cd nama_repo/src/backend
+   git clone https://github.com/AlvaroSeptra/backendgrouph.git
+   cd backendgrouph
    ```
 
 2. **Buat dan aktifkan virtual environment (opsional, tetapi direkomendasikan):**
 
    ```bash
    python -m venv env
-   source env/bin/activate  # Untuk pengguna Unix/Mac
-   env\Scripts\activate  # Untuk pengguna Windows
+   source env/bin/activate  # Mac
+   env\Scripts\activate  #  Windows
    ```
 
 3. **Instal semua dependensi yang diperlukan:**
