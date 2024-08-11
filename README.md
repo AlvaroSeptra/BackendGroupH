@@ -146,7 +146,6 @@ Pastikan file `requirements.txt` mencakup dependensi berikut:
 ```txt
 Flask
 Flask-JWT-Extended
-Flask-CORS
 psycopg2
 Werkzeug
 python-dotenv
