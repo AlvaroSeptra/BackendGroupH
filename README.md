@@ -53,8 +53,9 @@ Dokumentasi lengkap API backend ini dapat diakses melalui Postman dengan mengunj
 
    ```
    SECRET_KEY=your_secret_key
-   DATABASE_URL=postgresql://username:password@localhost:5432/nama_database
-   JWT_SECRET_KEY=your_jwt_secret_key
+   DATABASE_URL=
+   NEXT_PUBLIC_SUPABASE_URL=
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=
    ```
 
 2. **Konfigurasi Database**:
