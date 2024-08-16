@@ -1,3 +1,4 @@
+# services/cart_service.py
 def add_to_cart(conn, customer_id, product_id, quantity):
     with conn.cursor() as cur:
         cur.execute("INSERT INTO cart (customer_id, product_id, quantity) VALUES (%s, %s, %s)", 

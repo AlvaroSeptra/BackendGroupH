@@ -35,7 +35,7 @@ def add_product():
         return jsonify({'message': 'Product added successfully'}), 201
     except Exception as e:
         return jsonify({'error': 'An unexpected error occurred: ' + str(e)}), 500
-
+    
 @products_blueprint.route('/products/<uuid:product_id>', methods=['PUT'])
 @jwt_required()
 def update_product(product_id):
@@ -75,6 +75,37 @@ def delete_product(product_id):
             cur.execute("DELETE FROM products WHERE id = %s", (str(product_id),))
             conn.commit()
         return jsonify({'message': 'Product deleted successfully'}), 200
+    except Exception as e:
+        return jsonify({'error': 'An unexpected error occurred: ' + str(e)}), 500
+    finally:
+        conn.close()
+
+
+@products_blueprint.route('/products/seller', methods=['GET'])
+@jwt_required()
+def get_seller_products():
+    conn = get_db_connection()
+    current_user = get_jwt_identity()
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute("SELECT * FROM products WHERE seller_id = %s", (str(current_user['id']),))
+            products = cur.fetchall()
+
+            formatted_products = [
+                {
+                    "id": product['id'],
+                    "name": product['name'],
+                    "description": product['description'],
+                    "price": product['price'],
+                    "quantity": product['quantity'],
+                    "category": product['category'],
+                    "seller_id": product['seller_id']
+                }
+                for product in products
+            ]
+
+        return jsonify(formatted_products), 200
     except Exception as e:
         return jsonify({'error': 'An unexpected error occurred: ' + str(e)}), 500
     finally:

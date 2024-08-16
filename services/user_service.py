@@ -1,5 +1,4 @@
 # services/user_service.py
-
 class UserAlreadyExistsError(Exception):
     pass
 

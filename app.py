@@ -1,6 +1,7 @@
 # app.py
 from flask import Flask
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 from blueprints.auth import auth_blueprint
 from blueprints.products import products_blueprint
 from blueprints.vouchers import vouchers_blueprint
@@ -11,8 +12,7 @@ from db import get_db_connection, close_db_connection
 
 app = Flask(__name__)
 app.config.from_object(Config)
-
-# Inisialisasi JWTManager
+CORS(app)
 jwt = JWTManager(app)
 
 app.teardown_appcontext(close_db_connection)

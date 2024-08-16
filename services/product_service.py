@@ -1,3 +1,4 @@
+# services/product_service.py
 def get_all_products(conn):
     with conn.cursor() as cur:
         cur.execute("SELECT * FROM products")

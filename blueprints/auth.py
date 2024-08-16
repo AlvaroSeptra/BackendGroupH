@@ -1,6 +1,4 @@
-# blueprints/auth.py
 from flask import Blueprint, request, jsonify
-from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token
 from db import get_db_connection
 import uuid
@@ -11,7 +9,7 @@ auth_blueprint = Blueprint('auth', __name__)
 def register():
     conn = get_db_connection()
     data = request.get_json()
-    hashed_password = generate_password_hash(data['password'], method='sha256')
+    plain_password = data['password']  # Tidak ada hashing, password disimpan secara langsung
 
     try:
         with conn.cursor() as cur:
@@ -20,10 +18,10 @@ def register():
             if existing_user:
                 return jsonify({'error': 'User with this email already exists.'}), 400
 
-            user_id = str(uuid.uuid4())  # Konversi UUID ke string
+            user_id = str(uuid.uuid4())
             cur.execute(
                 "INSERT INTO users (id, username, email, password, location, role) VALUES (%s, %s, %s, %s, %s, %s)",
-                (user_id, data['username'], data['email'], hashed_password, data['location'], data['role'])
+                (user_id, data['username'], data['email'], plain_password, data['location'], data['role'])
             )
             conn.commit()
 
@@ -40,8 +38,12 @@ def login():
         with conn.cursor() as cur:
             cur.execute("SELECT * FROM users WHERE email = %s", (data['email'],))
             user = cur.fetchone()
-            if not user or not check_password_hash(user['password'], data['password']):
+            if not user or user['password'] != data['password']:  # Memeriksa password secara langsung
                 return jsonify({'error': 'Invalid email or password'}), 401
+            
+            # Cek apakah role yang dipilih user sesuai dengan yang tersimpan di database
+            # if user['role'] != data.get('role'):
+            #     return jsonify({'error': f"Incorrect role selected. You are registered as a {user['role']}."}), 403
 
             access_token = create_access_token(identity={'id': str(user['id']), 'username': user['username'], 'role': user['role']})
             return jsonify({'token': access_token}), 200
