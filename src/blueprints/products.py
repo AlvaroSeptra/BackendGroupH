@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify
 from db import get_db_connection
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import uuid
-from role_checker.py import role_required
+from role_checker import role_required
 
 products_blueprint = Blueprint('products', __name__)
 

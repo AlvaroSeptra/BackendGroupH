@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from db import get_db_connection
 import uuid
+from role_checker import role_required
 
 vouchers_blueprint = Blueprint('vouchers', __name__)
 
