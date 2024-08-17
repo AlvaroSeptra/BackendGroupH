@@ -3,6 +3,7 @@ from flask import Blueprint, request, jsonify
 from db import get_db_connection
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import uuid
+from role_checker.py import role_required
 
 products_blueprint = Blueprint('products', __name__)
 
@@ -19,6 +20,7 @@ def get_products():
 
 @products_blueprint.route('/products', methods=['POST'])
 @jwt_required()
+@role_required('seller')
 def add_product():
     conn = get_db_connection()
     current_user = get_jwt_identity()
@@ -38,6 +40,7 @@ def add_product():
     
 @products_blueprint.route('/products/<uuid:product_id>', methods=['PUT'])
 @jwt_required()
+@role_required('seller')
 def update_product(product_id):
     conn = get_db_connection()
     current_user = get_jwt_identity()
@@ -61,6 +64,7 @@ def update_product(product_id):
 
 @products_blueprint.route('/products/<uuid:product_id>', methods=['DELETE'])
 @jwt_required()
+@role_required('seller')
 def delete_product(product_id):
     conn = get_db_connection()
     current_user = get_jwt_identity()
@@ -83,6 +87,7 @@ def delete_product(product_id):
 
 @products_blueprint.route('/products/seller', methods=['GET'])
 @jwt_required()
+@role_required('seller')
 def get_seller_products():
     conn = get_db_connection()
     current_user = get_jwt_identity()

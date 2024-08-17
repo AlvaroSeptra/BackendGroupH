@@ -7,6 +7,7 @@ vouchers_blueprint = Blueprint('vouchers', __name__)
 
 @vouchers_blueprint.route('/vouchers', methods=['POST'])
 @jwt_required()
+@role_required('seller')
 def create_voucher():
     conn = get_db_connection()
     current_user = get_jwt_identity()
@@ -62,6 +63,7 @@ def get_vouchers():
 
 @vouchers_blueprint.route('/vouchers/<uuid:voucher_id>', methods=['DELETE'])
 @jwt_required()
+@role_required('seller')
 def delete_voucher(voucher_id):
     conn = get_db_connection()
     current_user = get_jwt_identity()
