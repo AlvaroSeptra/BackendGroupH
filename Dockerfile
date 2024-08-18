@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM --platform=linux/amd64 python:3.11-slim
+FROM --platform=linux/amd64 python:3.12-slim AS build
 
 # Set the working directory to /app
 RUN mkdir -p /app
@@ -14,8 +14,8 @@ RUN pip install -U pipenv
 # Install dependencies using Pipenv
 RUN pipenv install --deploy
 
-# Expose port 5001 for Gunicorn
-EXPOSE 5001
+# Expose port 5000 for Gunicorn
+EXPOSE 5000
 
 # Run Gunicorn
 CMD ["pipenv", "run", "gunicorn", "-b", "0.0.0.0:5000", "app:app"]

@@ -28,14 +28,15 @@ typing-extensions = "*"
 urllib3 = "*"
 werkzeug = "*"
 yarg = "*"
-
-[dev-packages]
 pytest = "*"
 coverage = "*"
 flasgger = "*"
 gunicorn = "*"
 waitress = "*"
 colorama = "*"
+
+[dev-packages]
+
 
 [requires]
 python_version = "3.12"

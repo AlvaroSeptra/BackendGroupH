@@ -123,6 +123,7 @@ $RECYCLE.BIN/
 
 # Local .env file
 .env
+Dockerfile.local
 
 # VS Code
 .vscode/
