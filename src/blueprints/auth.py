@@ -45,7 +45,7 @@ def login():
             # if user['role'] != data.get('role'):
             #     return jsonify({'error': f"Incorrect role selected. You are registered as a {user['role']}."}), 403
 
-            access_token = create_access_token(identity={'id': str(user['id']), 'username': user['username']})
+            access_token = create_access_token(identity={'id': str(user['id']), 'username': user['username'], 'role': user['role']})
             return jsonify({'token': access_token}), 200
     except Exception as e:
         return jsonify({'error': 'An unexpected error occurred: ' + str(e)}), 500
