@@ -6,15 +6,15 @@ if command -v zsh >/dev/null 2>&1; then
     # If zsh is available, run the Docker commands in zsh
     exec zsh -c "
         docker build -t ecommerce .
-        docker tag ecommerce dockerfawwazaid/ecommerce:final-8
-        docker push dockerfawwazaid/ecommerce:final-8
+        docker tag ecommerce dockerfawwazaid/ecommerce:final-9
+        docker push dockerfawwazaid/ecommerce:final-9
     "
 else
     # If zsh is not available, fall back to bash
     echo "zsh not found. Using bash instead..."
     exec bash -c "
         docker build -t ecommerce .
-        docker tag ecommerce dockerfawwazaid/ecommerce:final-8
-        docker push dockerfawwazaid/ecommerce:final-8
+        docker tag ecommerce dockerfawwazaid/ecommerce:final-9
+        docker push dockerfawwazaid/ecommerce:final-9
     "
 fi  # End of the if block
