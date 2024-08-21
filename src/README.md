@@ -65,45 +65,55 @@ Dokumentasi lengkap API backend ini dapat diakses melalui Postman dengan mengunj
    Untuk membersihkan dan membuat ulang tabel dengan UUID sebagai primary key:
 
    ```sql
-   -- Drop existing tables and types
-   DROP TABLE IF EXISTS cart, vouchers, products, users CASCADE;
-   DROP TYPE IF EXISTS product_category;
+   -- Drop existing tables
+   DROP TABLE IF EXISTS cart CASCADE;
+   DROP TABLE IF EXISTS vouchers CASCADE;
+   DROP TABLE IF EXISTS products CASCADE;
+   DROP TABLE IF EXISTS users CASCADE;
 
-   -- Create product_category ENUM
+   -- Drop the existing types if they exist
+   DROP TYPE IF EXISTS product_category CASCADE;   
+   DROP TYPE IF EXISTS user_role CASCADE;
+
+   -- Create extension for UUID generation
+   CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+   -- Create the types again
    CREATE TYPE product_category AS ENUM ('ecofriendly', 'organic');
+   CREATE TYPE user_role AS ENUM ('seller', 'customer');
 
-   -- Create users table
+   -- Create users table with UUID as primary key
    CREATE TABLE users (
-       id UUID PRIMARY KEY,
+       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
        username VARCHAR(80) UNIQUE NOT NULL,
        email VARCHAR(120) UNIQUE NOT NULL,
        password VARCHAR(120) NOT NULL,
        location VARCHAR(50) NOT NULL,
-       role VARCHAR(20) NOT NULL
+       role user_role NOT NULL
    );
 
-   -- Create products table
+   -- Create products table with UUID as primary key and foreign key reference to users
    CREATE TABLE products (
-       id UUID PRIMARY KEY,
+       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
        name VARCHAR(100) NOT NULL,
        description TEXT NOT NULL,
-       price FLOAT NOT NULL,
+       price NUMERIC(10, 2) NOT NULL,
        quantity INT NOT NULL,
        category product_category NOT NULL,
        seller_id UUID REFERENCES users(id) ON DELETE CASCADE
    );
 
-   -- Create vouchers table
+   -- Create vouchers table with UUID as primary key and foreign key reference to users
    CREATE TABLE vouchers (
-       id UUID PRIMARY KEY,
+       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
        code VARCHAR(20) UNIQUE NOT NULL,
-       discount FLOAT NOT NULL,
+       discount NUMERIC(5, 2) NOT NULL,
        seller_id UUID REFERENCES users(id) ON DELETE CASCADE
    );
 
-   -- Create cart table
+   -- Create cart table with UUID as primary key and foreign key references to users and products
    CREATE TABLE cart (
-       id UUID PRIMARY KEY,
+       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
        customer_id UUID REFERENCES users(id) ON DELETE CASCADE,
        product_id UUID REFERENCES products(id) ON DELETE CASCADE,
        quantity INT NOT NULL
