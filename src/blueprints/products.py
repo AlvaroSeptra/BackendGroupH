@@ -28,10 +28,11 @@ def add_product():
 
     try:
         product_id = str(uuid.uuid4())
+        seller_id = str(current_user['id'])
         with conn.cursor() as cur:
             cur.execute(
                 "INSERT INTO products (id, name, description, price, quantity, category, seller_id) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                (product_id, data['name'], data['description'], data['price'], data['quantity'], data['category'], str(current_user['id']))
+                (product_id, data['name'], data['description'], data['price'], data['quantity'], data['category'], seller_id, data['image_url'])
             )
             conn.commit()
         return jsonify({'message': 'Product added successfully'}), 201
@@ -91,7 +92,7 @@ def delete_product(product_id):
 def get_seller_products():
     conn = get_db_connection()
     current_user = get_jwt_identity()
-
+    
     try:
         with conn.cursor() as cur:
             cur.execute("SELECT * FROM products WHERE seller_id = %s", (str(current_user['id']),))
@@ -105,7 +106,8 @@ def get_seller_products():
                     "price": product['price'],
                     "quantity": product['quantity'],
                     "category": product['category'],
-                    "seller_id": product['seller_id']
+                    "seller_id": product['seller_id'],
+                    "image_url": product['image_url']
                 }
                 for product in products
             ]
