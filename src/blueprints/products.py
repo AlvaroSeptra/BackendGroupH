@@ -26,19 +26,30 @@ def add_product():
     current_user = get_jwt_identity()
     data = request.get_json()
 
+    # Validate required fields
+    required_fields = ['name', 'description', 'price', 'quantity', 'category']
+    for field in required_fields:
+        if field not in data:
+            return jsonify({'error': f'Missing field: {field}'}), 400
+
     try:
         product_id = str(uuid.uuid4())
         seller_id = str(current_user['id'])
+
+        # Insert product into database
         with conn.cursor() as cur:
             cur.execute(
-                "INSERT INTO products (id, name, description, price, quantity, category, seller_id) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                (product_id, data['name'], data['description'], data['price'], data['quantity'], data['category'], seller_id, data['image_url'])
+                "INSERT INTO products (id, name, description, price, quantity, category, seller_id, image_url) "
+                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                (product_id, data['name'], data['description'], data['price'], data['quantity'], data['category'], seller_id, data.get('image_url', 'default-image-url'))
             )
             conn.commit()
         return jsonify({'message': 'Product added successfully'}), 201
     except Exception as e:
         return jsonify({'error': 'An unexpected error occurred: ' + str(e)}), 500
-    
+    finally:
+        conn.close()
+        
 @products_blueprint.route('/products/<uuid:product_id>', methods=['PUT'])
 @jwt_required()
 @role_required('seller')

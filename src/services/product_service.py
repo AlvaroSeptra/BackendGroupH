@@ -4,11 +4,11 @@ def get_all_products(conn):
         cur.execute("SELECT * FROM products")
         return cur.fetchall()
 
-def add_product(conn, name, description, price, quantity, category, seller_id):
+def add_product(conn, product_id, name, description, price, quantity, category, seller_id):
     with conn.cursor() as cur:
-        cur.execute("INSERT INTO products (name, description, price, quantity, category, seller_id) "
+        cur.execute("INSERT INTO products (id, name, description, price, quantity, category, seller_id) "
                     "VALUES (%s, %s, %s, %s, %s, %s)", 
-                    (name, description, price, quantity, category, seller_id))
+                    (product_id, name, description, price, quantity, category, seller_id))
         conn.commit()
 
 def update_product(conn, product_id, name, description, price, quantity, category, seller_id):
