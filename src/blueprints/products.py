@@ -50,7 +50,6 @@ def add_product():
     finally:
         conn.close()
         
-@products_blueprint.route('/products/<uuid:product_id>', methods=['PUT'])
 @jwt_required()
 @role_required('seller')
 def update_product(product_id):
@@ -66,12 +65,17 @@ def update_product(product_id):
                 return jsonify({'error': 'Product not found or you do not have permission to update this product.'}), 404
 
             cur.execute(
-                "UPDATE products SET name = %s, description = %s, price = %s, quantity = %s, category = %s WHERE id = %s AND seller_id = %s",
-                (data['name'], data['description'], data['price'], data['quantity'], data['category'], str(product_id), str(current_user['id']))
+                """
+                UPDATE products
+                SET name = %s, description = %s, price = %s, quantity = %s, category = %s, image_url = %s
+                WHERE id = %s AND seller_id = %s
+                """,
+                (data.get('name'), data.get('description'), data.get('price'), data.get('quantity'), data.get('category'), data.get('image_url'), str(product_id), str(current_user['id']))
             )
             conn.commit()
         return jsonify({'message': 'Product updated successfully'}), 200
     except Exception as e:
+        print(e)  # Log the exception for debugging purposes
         return jsonify({'error': 'An unexpected error occurred: ' + str(e)}), 500
 
 @products_blueprint.route('/products/<uuid:product_id>', methods=['DELETE'])
